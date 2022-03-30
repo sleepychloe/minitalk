@@ -8,7 +8,7 @@ main()
 
 ft_signal()
 	- recieves bits information and converts them to a character.
-	- static int c will save the bit information recieved.
+	- static int c will save the recieved bit information.
 	- counts number whenever it recieves the signal(SIGUSR1 and SIGUSR2 both).
 	- when it recieves SIGUSR2(when the bit was 1), remembers the value
 	  until the cnt becomes 8(becasue 1 byte is 8 bits).
