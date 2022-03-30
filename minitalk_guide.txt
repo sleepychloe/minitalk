@@ -33,7 +33,7 @@ ft_signal()
 	  SIGUSR1, SIGUSR2, SIGUSR2, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR2
 	  (0110 0001).
 
-	  now, cnt is 0 and c is 0 inside ft_signal().
+	  now, cnt is 0 and c is 0(=0000 0000) inside ft_signal().
 
 	  (1. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 1.
