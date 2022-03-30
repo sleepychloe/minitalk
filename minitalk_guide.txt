@@ -1,0 +1,165 @@
+********** server.c **********
+
+main()
+	- prints pid using getpid().
+	- when the pid is valid, waits for certain signal(SIGUSR1, SIGUSR2) using signal().
+	  when it is invalid, prints error message.
+	- whenever SIGUSR1 or SIGUSR2 is detected, ft_signal() is called.
+
+ft_signal()
+	- recieves bits information and converts them to a character.
+	- static int c will save the bit information recieved.
+	- counts number whenever it recieves the signal(SIGUSR1 and SIGUSR2 both).
+	- when it recieves SIGUSR2(when the bit was 1), remembers the value
+	  until the cnt becomes 8(becasue 1 byte is 8 bits).
+	- when cnt becomes 8, it prints the character.
+	  and then cnt becomes to 0, c becomes to 0x0 to recieve information
+	  of the next character.
+	  (at first i allocated 0 as c after a character printed
+	  and usually it worked properly,
+	  but sometimes the message i sent to the server was broken
+	  especially when i printed the long string that is consisted with characters
+	  inside ascii table.
+	  i couldn't find the reason why it doesn't work when c becomes decimal 0
+	  after printing and it does when c becomes hexadecimal 0x0 yet,
+	  but it doesn't work properly when it becomes decimal 0)
+
+	 *** example ***
+	  let's say the client want to send a character 'a'.
+	  character 'a' is 97 in the ascii table.
+	  decimal 97 is binary 0110 0001.
+
+	  in the main, it recieves in order to
+	  SIGUSR1, SIGUSR2, SIGUSR2, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR2
+	  (0110 0001).
+
+	  now, cnt is 0 and c is 0 inside ft_signal().
+
+	  (1. when SIGUSR1 is recieved)
+		go inside to ft_signal(); and cnt becomes 1.
+		c is 0000 0000 now.
+	  (2. when SIGUSR2 is recieved)
+		go inside to ft_signal(); and cnt becomes 2.
+		c was 0000 0000 and after doing ++(because of SIGUSR2),
+		c is 0000 0001 now.
+	  (3. when SIGUSR2 is recieved)
+		go inside to ft_signal(); and cnt becomes 3.
+		c was 0000 0010 and after doing ++(because of SIGUSR2),
+		c is 0000 0011 now.
+	  (4. when SIGUSR1 is recieved)
+		go inside to ft_signal(); and cnt becomes 4.
+		c is 0000 0110 now.
+	  (5. when SIGUSR1 is recieved)
+		go inside to ft_signal(); and cnt becomes 5.
+		c is 0000 1100 now.
+	  (6. when SIGUSR1 is recieved)
+		go inside to ft_signal(); and cnt becomes 6.
+		c is 0001 1000 now.
+	  (7. when SIGUSR1 is recieved)
+		go inside to ft_signal(); and cnt becomes 7.
+		c is 0011 0000 now.
+	  (8. when SIGUSR2 is recieved)
+		go inside to ft_signal(); and cnt becomes 8.
+		c was 0110 0000 and after doing ++(because of SIGUSR2),
+		c is 0110 0001 now.
+	  now cnt is 8, so it prints 0110 0001(ascii 'a').
+	  c becomes 0(=0x0), and cnt becomes 0.
+
+
+********** client.c **********
+
+main()
+	- when argc is 3(./client [PID] [MSG]), send messages to the server.
+	- if the pid is 0 or less than 0, prints error message.
+	  or send it to server using ft_transmit().
+	- sends the pid that was passed as a argument to the ft_transmit().
+
+ft_transmit()
+	- if the string(the message i want to send to the server) exists,
+	  makes signal to send the message to the server using ft_make_sig().
+	- data is transferred in the form of bits.
+	  1 byte(char) is 8 bits so to send the bits information(if it is 0 or 1)
+	  i'll send a character in the message i want to send one by one
+	  to ft_make_sig().
+	- we still have the pid information that was passed as a argument.
+	  whenever we send characters to the ft_make_sig(), it will be sent together.
+
+ft_make_sig()
+	- sends bits information making signal.
+	- checks right side to the left one by one.
+	- if it's 0, convert SIGUSR1 to the server, and if it's 1, convert SIGUSR2
+	  using kill().
+	- if the pid that was passed as a argument is not same as the server,
+	  signal won't send to the server.
+	- the interval between each signal is 200 micro seconds because of usleep(200).
+	  (i tested with 10, 50, and 100 micro seconds too,
+	  but the message i sent to the server was broken when the interval is too short)
+
+	 *** example ***
+	  character 'a' is 97 in the ascii table.
+	  decimal 97 is binary 0110 0001.
+
+	  let's say char c = 'a';
+
+	  inside the ft_make_sig, variable named bit starts from 8.
+	  when bit is 7, 6, 5, ..., 0, signal is sent to the server.
+	      -------------------------
+			c  | 0110 0001
+	      -------------------------
+		(bit == 7)
+	      -------------------------
+		   c >> 7  | 0000 0000
+		        1  | 0000 0001
+	      -------------------------
+		c >> 7 & 1 |	     0
+	      -------------------------
+		(bit == 6)
+	      -------------------------
+		   c >> 6  | 0000 0001
+			1  | 0000 0001
+	      -------------------------
+		c >> 6 & 1 |	     1
+	      -------------------------
+		(bit == 5)
+
+		   c >> 5  | 0000 0011
+			1  | 0000 0001
+	      -------------------------
+		c >> 5 & 1 |	     1
+	      -------------------------
+		(bit == 4)
+	      -------------------------
+		   c >> 4  | 0000 0110
+			1  | 0000 0001
+	      -------------------------
+		c >> 4 & 1 |	     0
+	      -------------------------
+		(bit == 3)
+	      -------------------------
+		   c >> 3  | 0000 1100
+			1  | 0000 0001
+	      -------------------------
+		c >> 3 & 1 |	     0
+	      -------------------------
+		(bit == 2)
+	      -------------------------
+		   c >> 2  | 0001 1000
+			1  | 0000 0001
+	      -------------------------
+		c >> 2 & 1 |	     0
+	      -------------------------
+		(bit == 1)
+	      -------------------------
+		   c >> 1  | 0011 0000
+			1  | 0000 0001
+	      -------------------------
+		c >> 1 & 1 |	     0
+	      -------------------------
+		(bit == 0)
+	      -------------------------
+		   c >> 0  | 0110 0001
+			1  | 0000 0001
+	      -------------------------
+		c >> 0 & 1 |	     1
+	      -------------------------
+	  -> it transmits to the server in order to original number (0110 0001)
