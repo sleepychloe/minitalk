@@ -44,7 +44,7 @@ ft_signal()
 		c is 0000 0001 now.
 	  (3. when SIGUSR2 is recieved)
 		go inside to ft_signal(); and cnt becomes 3.
-		c was 0000 0010 and after doing ++(because of SIGUSR2),
+		c was 0000 0001 and after doing ++(because of SIGUSR2),
 		c is 0000 0011 now.
 	  (4. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 4.
