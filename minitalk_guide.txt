@@ -29,7 +29,7 @@ ft_signal()
 	  character 'a' is 97 in the ascii table.
 	  decimal 97 is binary 0110 0001.
 
-	  in the main, it recieves in order to
+	  in the main, it recieves signals in order to
 	  SIGUSR1, SIGUSR2, SIGUSR2, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR1, SIGUSR2
 	  (0110 0001).
 
