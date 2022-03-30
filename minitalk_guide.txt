@@ -37,7 +37,7 @@ ft_signal()
 
 	  (1. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 1.
-		c is 0000 0000 now.
+		after shifting, c is 0000 0000 now.
 	  (2. when SIGUSR2 is recieved)
 		go inside to ft_signal(); and cnt becomes 2.
 		c was 0000 0000 and after shifting and doing ++(because of SIGUSR2),
@@ -48,16 +48,16 @@ ft_signal()
 		c is 0000 0011 now.
 	  (4. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 4.
-		c is 0000 0110 now.
+		after shifting, c is 0000 0110 now.
 	  (5. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 5.
-		c is 0000 1100 now.
+		after shifting, c is 0000 1100 now.
 	  (6. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 6.
-		c is 0001 1000 now.
+		after shifting, c is 0001 1000 now.
 	  (7. when SIGUSR1 is recieved)
 		go inside to ft_signal(); and cnt becomes 7.
-		c is 0011 0000 now.
+		after shifting, c is 0011 0000 now.
 	  (8. when SIGUSR2 is recieved)
 		go inside to ft_signal(); and cnt becomes 8.
 		c was 0110 0000 and after shifting and doing ++(because of SIGUSR2),
