@@ -18,7 +18,7 @@ ft_signal()
 	  (at first i allocated 0 as c after a character printed
 	  and usually it worked properly,
 	  but sometimes the message i sent to the server was broken
-	  especially when i printed the long string that is consisted with characters
+	  especially when it is long string that is consisted with characters
 	  inside ascii table.
 	  i couldn't find the reason why it doesn't work when c becomes decimal 0
 	  after printing and it does when c becomes hexadecimal 0x0 yet,
