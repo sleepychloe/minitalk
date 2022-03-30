@@ -34,7 +34,7 @@ int	main(void)
 	int	pid;
 
 	pid = getpid();
-	if (100 < pid && pid <= 32768)
+	if (100 < pid && pid <= 32768) //maximum pid : (linux)32768, (mac)99998
 	{
 		ft_printf("%d\n", pid);
 		while (1)
