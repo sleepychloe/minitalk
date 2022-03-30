@@ -62,7 +62,7 @@ ft_signal()
 		go inside to ft_signal(); and cnt becomes 8.
 		c was 0110 0000 and after shifting and doing ++(because of SIGUSR2),
 		c is 0110 0001 now.
-	  now cnt is 8, so it prints 0110 0001(ascii 'a').
+	  now cnt is 8, so it prints 0110 0001(=decimal 97, 'a' in the ascii table).
 	  c becomes 0(=0x0), and cnt becomes 0.
 
 
