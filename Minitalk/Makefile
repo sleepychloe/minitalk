@@ -6,7 +6,7 @@
 #    By: yhwang <yhwang@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2022/03/29 13:59:42 by yhwang            #+#    #+#              #
-#    Updated: 2022/03/29 15:24:19 by yhwang           ###   ########.fr        #
+#    Updated: 2022/06/25 23:42:25 by yhwang           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,10 +45,10 @@ all: $(LIBFT_NAME) $(SERVER_NAME) $(CLIENT_NAME)
 $(LIBFT_NAME):
 	make -C $(LIBFT_DIR)
 
-$(SERVER_NAME): $(SERVER_SRCS) $(LIBFT)
+$(SERVER_NAME): $(SERVER_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $^ -o $@
 
-$(CLIENT_NAME): $(CLIENT_SRCS) $(LIBFT)
+$(CLIENT_NAME): $(CLIENT_OBJS) $(LIBFT)
 	$(CC) $(CFLAGS) $^ -o $@
 
 clean:
